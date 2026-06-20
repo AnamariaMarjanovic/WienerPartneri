@@ -1,0 +1,18 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+*.db
+*.db-shm
+*.db-wal
+
+# Angular
+wiener-frontend/node_modules/
+wiener-frontend/.angular/
+wiener-frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
