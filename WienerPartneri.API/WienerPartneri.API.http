@@ -1,0 +1,6 @@
+@WienerPartneri.API_HostAddress = http://localhost:5252
+
+GET {{WienerPartneri.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
