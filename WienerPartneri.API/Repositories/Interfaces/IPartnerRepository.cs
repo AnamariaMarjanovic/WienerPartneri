@@ -6,5 +6,5 @@ public interface IPartnerRepository
 {
     Task<IEnumerable<Partner>> GetAllPartnersAsync();
     Task<Partner?> GetPartnerByIdAsync(int id);
-    Task<Partner> CreatePartnerAsync(Partner partner);
+    Task<int> CreatePartnerAsync(Partner partner);
 }
