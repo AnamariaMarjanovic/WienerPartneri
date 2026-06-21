@@ -1,10 +1,10 @@
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { PartnerService } from '../../services/partner';
-import { PolicyService } from '../../services/policy';
 import { Partner, PartnerType } from '../../models/partner.model';
 import { Policy } from '../../models/policy.model';
-import { CommonModule, DatePipe } from '@angular/common';
+import { PartnerService } from '../../services/partner';
+import { PolicyService } from '../../services/policy';
 import { PartnerDetailModal } from '../partner-detail-modal/partner-detail-modal';
 import { PolicyForm } from '../policy-form/policy-form';
 

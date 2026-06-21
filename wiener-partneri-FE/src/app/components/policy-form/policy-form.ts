@@ -1,7 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../../services/policy';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-policy-form',

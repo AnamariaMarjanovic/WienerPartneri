@@ -1,5 +1,5 @@
-import { Component, input, output } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { Component, input, output } from '@angular/core';
 import { Partner } from '../../models/partner.model';
 import { Policy } from '../../models/policy.model';
 

@@ -1,9 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PartnerService } from '../../services/partner';
-import { CommonModule } from '@angular/common';
 import { PartnerType } from '../../models/partner.model';
+import { PartnerService } from '../../services/partner';
 
 @Component({
   selector: 'app-partner-form',
