@@ -24,6 +24,7 @@ export class PartnerList implements OnInit {
   partnerPolicies = signal<Policy[]>([]);
   policyPartnerId = signal<number | null>(null);
   newPartnerId = signal<number | null>(null);
+  partnerStats = signal<Map<number, { count: number; totalAmount: number }>>(new Map());
   isLoading = signal(false);
 
   ngOnInit() {
@@ -40,9 +41,30 @@ export class PartnerList implements OnInit {
       next: (data) => {
         this.partners.set(data);
         this.isLoading.set(false);
+        this.loadAllStats(data);
       },
       error: () => this.isLoading.set(false),
     });
+  }
+
+  loadAllStats(partners: Partner[]) {
+    partners.forEach((partner) => {
+      if (partner.id) {
+        this.policyService.getStats(partner.id).subscribe({
+          next: (stats) => {
+            const map = new Map(this.partnerStats());
+            map.set(partner.id!, stats);
+            this.partnerStats.set(map);
+          },
+        });
+      }
+    });
+  }
+
+  isMarked(partner: Partner): boolean {
+    const stats = this.partnerStats().get(partner.id!);
+    if (!stats) return false;
+    return stats.count > 5 || stats.totalAmount > 5000;
   }
 
   selectPartner(partner: Partner) {

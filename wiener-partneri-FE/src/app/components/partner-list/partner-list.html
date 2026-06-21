@@ -47,7 +47,12 @@
                 >
                   <td class="py-3 pl-4 align-middle">
                     <div class="d-flex align-items-center">
-                      <span> {{ partner.firstName }} {{ partner.lastName }} </span>
+                      <span>
+                        @if (isMarked(partner)) {
+                          <span class="text-danger font-weight-bold">* </span>
+                        }
+                        {{ partner.firstName }} {{ partner.lastName }}
+                      </span>
                     </div>
                   </td>
                   <td class="py-3 align-middle">
