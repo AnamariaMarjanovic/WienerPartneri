@@ -1,3 +1,8 @@
+export enum PartnerType {
+  Personal = 1,
+  Legal = 2,
+}
+
 export interface Partner {
   id?: number;
   firstName: string;
@@ -5,7 +10,7 @@ export interface Partner {
   address?: string;
   partnerNumber: string;
   croatianPIN?: string;
-  partnerTypeId: number;
+  partnerTypeId: PartnerType;
   createdAtUtc?: string;
   createdByUser: string;
   isForeign: boolean;

@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PartnerService } from '../../services/partner';
 import { CommonModule } from '@angular/common';
+import { PartnerType } from '../../models/partner.model';
 
 @Component({
   selector: 'app-partner-form',
@@ -17,6 +18,8 @@ export class PartnerForm {
 
   isSubmitting = signal(false);
   errorMessage = signal<string | null>(null);
+
+  PartnerType = PartnerType;
 
   form = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],

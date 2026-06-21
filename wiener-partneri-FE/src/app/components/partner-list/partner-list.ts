@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PartnerService } from '../../services/partner';
 import { PolicyService } from '../../services/policy';
-import { Partner } from '../../models/partner.model';
+import { Partner, PartnerType } from '../../models/partner.model';
 import { Policy } from '../../models/policy.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { PartnerDetailModal } from '../partner-detail-modal/partner-detail-modal';
@@ -95,6 +95,6 @@ export class PartnerList implements OnInit {
   }
 
   getPartnerTypeLabel(typeId: number): string {
-    return typeId === 1 ? 'Personal' : 'Legal';
+    return typeId === PartnerType.Personal ? 'Personal' : 'Legal';
   }
 }

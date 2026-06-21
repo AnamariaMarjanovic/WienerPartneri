@@ -100,8 +100,8 @@
                 formControlName="partnerTypeId"
               >
                 <option [ngValue]="null" disabled>Odaberi tip</option>
-                <option [ngValue]="1">Personal</option>
-                <option [ngValue]="2">Legal</option>
+                <option [ngValue]="PartnerType.Personal">Personal</option>
+                <option [ngValue]="PartnerType.Legal">Legal</option>
               </select>
               @if (hasError('partnerTypeId', 'required')) {
                 <div class="invalid-feedback">Tip partnera je obavezan.</div>
