@@ -1,1 +1,143 @@
-<p>partner-list works!</p>
+<div class="container-fluid mt-4 px-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-0 font-weight-bold" style="color: #1a1a2e">Partneri osiguravajućeg društva</h2>
+      <small class="text-muted">Wiener osiguranje</small>
+    </div>
+    <button class="btn btn-primary px-4 py-2" style="border-radius: 8px" (click)="goToNewPartner()">
+      <strong>+ Novi partner</strong>
+    </button>
+  </div>
+
+  <!-- Kartica s tablicom -->
+  <div class="card shadow-sm" style="border-radius: 12px; border: none">
+    <div class="card-body p-0">
+      @if (isLoading()) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Učitavanje partnera...</p>
+        </div>
+      } @else if (partners().length === 0) {
+        <div class="text-center py-5">
+          <p class="text-muted">Nema unesenih partnera.</p>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead style="background: linear-gradient(135deg, #1a1a2e, #16213e); color: white">
+              <tr>
+                <th class="py-3 pl-4">Ime i prezime</th>
+                <th class="py-3">Broj partnera</th>
+                <th class="py-3">Tip</th>
+                <th class="py-3">OIB</th>
+                <th class="py-3">Spol</th>
+                <th class="py-3">Stranac</th>
+                <th class="py-3">Datum unosa</th>
+                <th class="py-3 text-center">Akcije</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (partner of partners(); track partner.id) {
+                <tr
+                  [class.table-warning]="partner.id === newPartnerId()"
+                  [class.font-weight-bold]="partner.id === newPartnerId()"
+                  style="cursor: pointer; transition: background 0.2s"
+                  (click)="selectPartner(partner)"
+                >
+                  <td class="py-3 pl-4 align-middle">
+                    <div class="d-flex align-items-center">
+                      <span> {{ partner.firstName }} {{ partner.lastName }} </span>
+                    </div>
+                  </td>
+                  <td class="py-3 align-middle">
+                    <code style="font-size: 12px">{{ partner.partnerNumber }}</code>
+                  </td>
+                  <td class="py-3 align-middle">
+                    @if (partner.partnerTypeId === 1) {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #e3f2fd; color: #1565c0; padding: 6px 12px"
+                        >Personal</span
+                      >
+                    } @else {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #f3e5f5; color: #6a1b9a; padding: 6px 12px"
+                        >Legal</span
+                      >
+                    }
+                  </td>
+                  <td class="py-3 align-middle text-muted">{{ partner.croatianPIN ?? '-' }}</td>
+                  <td class="py-3 align-middle">
+                    @if (partner.gender === 'M') {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #e8f5e9; color: #2e7d32; padding: 6px 10px"
+                        >M</span
+                      >
+                    } @else if (partner.gender === 'F') {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #fce4ec; color: #c62828; padding: 6px 10px"
+                        >F</span
+                      >
+                    } @else {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #f5f5f5; color: #555; padding: 6px 10px"
+                        >N</span
+                      >
+                    }
+                  </td>
+                  <td class="py-3 align-middle">
+                    @if (partner.isForeign) {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #fff3e0; color: #e65100; padding: 6px 12px"
+                        >Da</span
+                      >
+                    } @else {
+                      <span
+                        class="badge badge-pill"
+                        style="background: #e8f5e9; color: #2e7d32; padding: 6px 12px"
+                        >Ne</span
+                      >
+                    }
+                  </td>
+                  <td class="py-3 align-middle text-muted" style="font-size: 13px">
+                    {{ partner.createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}
+                  </td>
+                  <td class="py-3 align-middle text-center">
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: #f0f4ff;
+                        color: #3d5afe;
+                        border: 1px solid #c5cae9;
+                        border-radius: 6px;
+                      "
+                      (click)="$event.stopPropagation(); openPolicyDialog(partner.id!)"
+                    >
+                      + Polica
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Modal detalji partnera -->
+@if (selectedPartner()) {
+  <app-partner-detail-modal
+    [partner]="selectedPartner()!"
+    [policies]="partnerPolicies()"
+    (closed)="closeModal()"
+  >
+  </app-partner-detail-modal>
+}
