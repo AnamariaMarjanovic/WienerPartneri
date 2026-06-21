@@ -6,11 +6,12 @@ import { Partner } from '../../models/partner.model';
 import { Policy } from '../../models/policy.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { PartnerDetailModal } from '../partner-detail-modal/partner-detail-modal';
+import { PolicyForm } from '../policy-form/policy-form';
 
 @Component({
   selector: 'app-partner-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, PartnerDetailModal],
+  imports: [CommonModule, DatePipe, PartnerDetailModal, PolicyForm],
   templateUrl: './partner-list.html',
 })
 export class PartnerList implements OnInit {

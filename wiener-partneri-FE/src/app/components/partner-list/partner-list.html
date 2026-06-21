@@ -141,3 +141,9 @@
   >
   </app-partner-detail-modal>
 }
+
+<!-- Modal dodavanje police -->
+@if (policyPartnerId()) {
+  <app-policy-form [partnerId]="policyPartnerId()!" (closed)="closePolicyDialog()">
+  </app-policy-form>
+}
