@@ -1,34 +1,24 @@
+using WienerPartneri.API.Data;
+using WienerPartneri.API.Repositories;
+using WienerPartneri.API.Repositories.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// Registracija repositorija
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+builder.Services.AddSingleton<IPartnerRepository>(_ => new PartnerRepository(connectionString));
+builder.Services.AddSingleton<IPolicyRepository>(_ => new PolicyRepository(connectionString));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Inicijalizacija baze
+var dbInitializer = new DatabaseInitializer(connectionString);
+dbInitializer.Initialize();
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-});
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
