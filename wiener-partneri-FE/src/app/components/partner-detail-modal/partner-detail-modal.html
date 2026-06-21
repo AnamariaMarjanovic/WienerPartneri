@@ -1,1 +1,120 @@
-<p>partner-detail-modal works!</p>
+<div class="modal d-block" tabindex="-1" style="background: rgba(0, 0, 0, 0.5)">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-radius: 12px; border: none">
+      <div
+        class="modal-header"
+        style="
+          background: linear-gradient(135deg, #1a1a2e, #16213e);
+          color: white;
+          border-radius: 12px 12px 0 0;
+        "
+      >
+        <div class="d-flex align-items-center">
+          <h5 class="modal-title mb-0">{{ partner().firstName }} {{ partner().lastName }}</h5>
+        </div>
+        <button type="button" class="close" style="color: white; opacity: 1" (click)="close()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Broj partnera</small
+              >
+              <p class="mb-0 font-weight-bold">
+                <code>{{ partner().partnerNumber }}</code>
+              </p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Adresa</small
+              >
+              <p class="mb-0">{{ partner().address ?? '-' }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >OIB</small
+              >
+              <p class="mb-0">{{ partner().croatianPIN ?? '-' }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Tip partnera</small
+              >
+              <p class="mb-0">{{ getPartnerTypeLabel(partner().partnerTypeId) }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Spol</small
+              >
+              <p class="mb-0">{{ partner().gender }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Stranac</small
+              >
+              <p class="mb-0">{{ partner().isForeign ? 'Da' : 'Ne' }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Vanjski kod</small
+              >
+              <p class="mb-0">{{ partner().externalCode ?? '-' }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Kreirao</small
+              >
+              <p class="mb-0">{{ partner().createdByUser }}</p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted text-uppercase" style="font-size: 11px; letter-spacing: 1px"
+                >Datum unosa</small
+              >
+              <p class="mb-0">{{ partner().createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}</p>
+            </div>
+          </div>
+        </div>
+
+        @if (policies().length > 0) {
+          <hr />
+          <h6 class="font-weight-bold mb-3">Police partnera</h6>
+          <table class="table table-sm table-bordered">
+            <thead style="background: #f8f9fa">
+              <tr>
+                <th>Broj police</th>
+                <th>Iznos</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (policy of policies(); track policy.id) {
+                <tr>
+                  <td>{{ policy.policyNumber }}</td>
+                  <td class="font-weight-bold">{{ policy.amount | number: '1.2-2' }} kn</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="text-center py-3">
+            <p class="text-muted mb-0">Nema unesenih polica.</p>
+          </div>
+        }
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid #eee">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          style="border-radius: 6px"
+          (click)="close()"
+        >
+          Zatvori
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
