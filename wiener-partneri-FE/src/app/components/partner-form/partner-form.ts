@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PartnerType } from '../../models/partner.model';
+import { Gender, PartnerType } from '../../models/partner.model';
 import { PartnerService } from '../../services/partner';
 
 @Component({
@@ -20,6 +20,7 @@ export class PartnerForm {
   errorMessage = signal<string | null>(null);
 
   PartnerType = PartnerType;
+  Gender = Gender;
 
   form = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],

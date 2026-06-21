@@ -3,6 +3,12 @@ export enum PartnerType {
   Legal = 2,
 }
 
+export enum Gender {
+  M = 'M',
+  F = 'F',
+  N = 'N',
+}
+
 export interface Partner {
   id?: number;
   firstName: string;
