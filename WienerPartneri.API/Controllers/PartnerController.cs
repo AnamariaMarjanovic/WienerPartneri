@@ -41,6 +41,6 @@ public class PartnerController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         partner.CreatedAtUtc = DateTime.UtcNow;
         var newPartnerId = await _partnerRepository.CreatePartnerAsync(partner);
-        return CreatedAtAction(nameof(GetPartnerById), new { id = newPartnerId }, partner);
+        return CreatedAtAction(nameof(GetPartnerById), new { id = newPartnerId }, new { id = newPartnerId });
     }
 }
