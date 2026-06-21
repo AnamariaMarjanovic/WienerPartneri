@@ -16,3 +16,8 @@ wiener-frontend/dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Root node_modules (greška)
+node_modules/
+package.json
+package-lock.json
