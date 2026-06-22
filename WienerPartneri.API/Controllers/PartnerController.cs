@@ -18,10 +18,13 @@ public class PartnerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllPartners()
+    public async Task<IActionResult> GetAllPartners(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null)
     {
-        var partners = await _partnerRepository.GetAllPartnersAsync();
-        return Ok(partners);
+        var result = await _partnerRepository.GetAllPartnersAsync(page, pageSize, search);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
