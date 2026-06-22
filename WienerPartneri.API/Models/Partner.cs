@@ -6,13 +6,6 @@ public enum PartnerType
     Legal = 2
 }
 
-public enum Gender
-{
-    M,
-    F,
-    N
-}
-
 public class Partner 
 {
     public int Id { get; set; }
@@ -26,7 +19,7 @@ public class Partner
     public string CreatedByUser { get; set; } = string.Empty;
     public bool IsForeign { get; set; }
     public string? ExternalCode { get; set; }
-    public Gender Gender { get; set; }
+    public string Gender { get; set; } = string.Empty;
 
     public string FullName => $"{FirstName} {LastName}";
 }
