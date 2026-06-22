@@ -16,11 +16,42 @@ public class PartnerRepository: IPartnerRepository
 
     private SqliteConnection CreateConnection() => new SqliteConnection(_connectionString);
 
-    public async Task<IEnumerable<Partner>> GetAllPartnersAsync()
+    public async Task<PagedResult<Partner>> GetAllPartnersAsync(int page, int pageSize, string? search)
     {
-        using var connection = CreateConnection();
-        var sql = "SELECT * FROM Partner ORDER BY CreatedAtUtc DESC";
-        return await connection.QueryAsync<Partner>(sql);
+         using var connection = CreateConnection();
+
+        var whereClause = string.Empty;
+        object parameters = new { };
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            whereClause = "WHERE FirstName LIKE @Search OR LastName LIKE @Search OR PartnerNumber LIKE @Search";
+            parameters = new { Search = $"%{search}%" };
+        }
+
+        var countSql = $"SELECT COUNT(*) FROM Partner {whereClause}";
+        var totalCount = await connection.ExecuteScalarAsync<int>(countSql, parameters);
+
+        var dataSql = $@"
+            SELECT * FROM Partner 
+            {whereClause}
+            ORDER BY CreatedAtUtc DESC
+            LIMIT @PageSize OFFSET @Offset";
+
+        var items = await connection.QueryAsync<Partner>(dataSql, new
+        {
+            Search = $"%{search}%",
+            PageSize = pageSize,
+            Offset = (page - 1) * pageSize
+        });
+
+        return new PagedResult<Partner>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
     public async Task<Partner?> GetPartnerByIdAsync(int id)

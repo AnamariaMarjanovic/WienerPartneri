@@ -4,7 +4,7 @@ namespace WienerPartneri.API.Repositories.Interfaces;
 
 public interface IPartnerRepository
 {
-    Task<IEnumerable<Partner>> GetAllPartnersAsync();
+    Task<PagedResult<Partner>> GetAllPartnersAsync(int page, int pageSize, string? search);
     Task<Partner?> GetPartnerByIdAsync(int id);
     Task<int> CreatePartnerAsync(Partner partner);
 }
