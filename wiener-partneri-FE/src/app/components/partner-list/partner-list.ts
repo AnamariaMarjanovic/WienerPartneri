@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { PagedResult } from '../../models/paged-result.model';
 import { Partner, PartnerType } from '../../models/partner.model';
 import { Policy } from '../../models/policy.model';
 import { PartnerService } from '../../services/partner';
@@ -27,6 +28,12 @@ export class PartnerList implements OnInit {
   partnerStats = signal<Map<number, { count: number; totalAmount: number }>>(new Map());
   isLoading = signal(false);
 
+  currentPage = signal(1);
+  pageSize = signal(10);
+  totalPages = signal(0);
+  totalCount = signal(0);
+  searchTerm = signal('');
+
   ngOnInit() {
     this.loadPartners();
     const nav = history.state;
@@ -37,14 +44,18 @@ export class PartnerList implements OnInit {
 
   loadPartners() {
     this.isLoading.set(true);
-    this.partnerService.getAll().subscribe({
-      next: (data) => {
-        this.partners.set(data);
-        this.isLoading.set(false);
-        this.loadAllStats(data);
-      },
-      error: () => this.isLoading.set(false),
-    });
+    this.partnerService
+      .getAll(this.currentPage(), this.pageSize(), this.searchTerm() || undefined)
+      .subscribe({
+        next: (data: PagedResult<Partner>) => {
+          this.partners.set(data.items);
+          this.totalPages.set(data.totalPages);
+          this.totalCount.set(data.totalCount);
+          this.isLoading.set(false);
+          this.loadAllStats(data.items);
+        },
+        error: () => this.isLoading.set(false),
+      });
   }
 
   loadAllStats(partners: Partner[]) {
@@ -96,5 +107,22 @@ export class PartnerList implements OnInit {
 
   getPartnerTypeLabel(typeId: number): string {
     return typeId === PartnerType.Personal ? 'Personal' : 'Legal';
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+      this.loadPartners();
+    }
+  }
+
+  onSearch(term: string) {
+    this.searchTerm.set(term);
+    this.currentPage.set(1);
+    this.loadPartners();
+  }
+
+  pages() {
+    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   }
 }

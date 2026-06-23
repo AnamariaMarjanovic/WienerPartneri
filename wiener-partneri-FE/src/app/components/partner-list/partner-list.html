@@ -132,7 +132,51 @@
             </tbody>
           </table>
         </div>
+        @if (totalPages() > 1) {
+          <div
+            class="d-flex justify-content-between align-items-center px-3 py-2"
+            style="border-top: 1px solid #eee"
+          >
+            <small class="text-muted"> Stranica {{ currentPage() }} od {{ totalPages() }} </small>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="currentPage() === 1">
+                  <a class="page-link" style="cursor: pointer" (click)="goToPage(currentPage() - 1)"
+                    >←</a
+                  >
+                </li>
+                @for (page of pages(); track page) {
+                  <li class="page-item" [class.active]="page === currentPage()">
+                    <a class="page-link" style="cursor: pointer" (click)="goToPage(page)">{{
+                      page
+                    }}</a>
+                  </li>
+                }
+                <li class="page-item" [class.disabled]="currentPage() === totalPages()">
+                  <a class="page-link" style="cursor: pointer" (click)="goToPage(currentPage() + 1)"
+                    >→</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        }
       }
+    </div>
+    <div class="d-flex justify-content-between align-items-center px-3 pt-3 pb-2">
+      <div class="input-group" style="max-width: 350px">
+        <div class="input-group-prepend">
+          <span class="input-group-text" style="background: #f8f9fa">🔍</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pretraži po imenu ili broju partnera..."
+          [value]="searchTerm()"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </div>
+      <small class="text-muted">{{ totalCount() }} partnera</small>
     </div>
   </div>
 </div>
